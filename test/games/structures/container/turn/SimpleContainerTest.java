@@ -10,9 +10,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class SimpleContainerTest
 {
     @Test
-    public void game()
+    public void singlePlayerGame()
     {
         Container<SimpleAction, SimpleGameEngine, SimplePlayer, SimpleState> container = new SimpleContainer<>(
+                SimpleState.EMPTY,
                 new SimpleGameEngine(),
                 Collections.singletonList(new SimplePlayer())
         );
@@ -20,7 +21,7 @@ public class SimpleContainerTest
         CountingListener listener = new CountingListener();
         container.addGameStateChangeListener(listener);
 
-        container.startGame(SimpleState.EMPTY);
+        container.playGame();
 
         assertThat("Listener should have been notified twice", listener.getNumNotifications(), is(2));
     }

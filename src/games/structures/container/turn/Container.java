@@ -11,6 +11,10 @@ package games.structures.container.turn;
  */
 public interface Container<A, E extends GameEngine<A, E, P, S>, P extends Player<A, E, P, S>, S>
 {
-    public void startGame(S startState);
+    public void playGame();
+
+    public S getStartState();
+    public void setStartState(S startState);
+
     public void addGameStateChangeListener(GameStateChangeListener<A, E, P, S> listener);
 }

@@ -16,16 +16,28 @@ import java.util.Set;
 class SimpleContainer<A, E extends GameEngine<A, E, P, S>, P extends Player<A, E, P, S>, S>
     implements Container<A, E, P, S>
 {
-    public SimpleContainer(E gameEngine, List<P> players)
+    public SimpleContainer(S startState, E gameEngine, List<P> players)
     {
+        setStartState(startState);
         this.gameEngine = gameEngine;
         this.players = players;
     }
 
+    public S getStartState()
+    {
+        return startState;
+    }
+
+    public void setStartState(S startState)
+    {
+        this.startState = startState;
+    }
+
     @Override
-    public void startGame(S currentState)
+    public void playGame()
     {
         P currentPlayer = players.get(0);
+        S currentState = getStartState();
 
         while(!gameEngine.isGameCompletedAt(currentState))
         {
@@ -56,6 +68,7 @@ class SimpleContainer<A, E extends GameEngine<A, E, P, S>, P extends Player<A, E
         return players.get(currPlayerIndex+1);
     }
 
+    private S startState;
     private E gameEngine;
     private List<P> players;
     private Set<GameStateChangeListener<A, E, P, S>> gameStateChangeListeners = new HashSet<>();
