@@ -1,5 +1,6 @@
 package games.structures.container.turn;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -15,6 +16,8 @@ public interface GameEngine<A, E extends GameEngine<A, E, P, S>, P extends Playe
 {
     public List<A> getPossibleActionsForAt(P actingPlayer, S currentState);
     public S applyActionByAt(A action, P actingPlayer, S currentState);
+
+    public List<P> rankPlayersAt(Collection<P> players, S currentState);
 
     public boolean isGameCompletedAt(S currentState);
 }

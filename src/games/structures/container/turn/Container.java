@@ -1,5 +1,7 @@
 package games.structures.container.turn;
 
+import java.util.List;
+
 /**
  *
  * @param <A> The type of actions which the player can take
@@ -17,4 +19,6 @@ public interface Container<A, E extends GameEngine<A, E, P, S>, P extends Player
     public void setStartState(S startState);
 
     public void addGameStateChangeListener(GameStateChangeListener<A, E, P, S> listener);
+
+    public List<P> getPlayerRanking();
 }

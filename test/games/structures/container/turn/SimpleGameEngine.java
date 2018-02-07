@@ -1,7 +1,6 @@
 package games.structures.container.turn;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 class SimpleGameEngine implements GameEngine<SimpleAction, SimpleGameEngine, SimplePlayer, SimpleState>
 {
@@ -23,6 +22,12 @@ class SimpleGameEngine implements GameEngine<SimpleAction, SimpleGameEngine, Sim
         }
 
         return SimpleState.EMPTY;
+    }
+
+    @Override
+    public List<SimplePlayer> rankPlayersAt(Collection<SimplePlayer> players, SimpleState currentState)
+    {
+        return new ArrayList<>(players);
     }
 
     @Override

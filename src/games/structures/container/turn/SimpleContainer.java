@@ -23,16 +23,6 @@ class SimpleContainer<A, E extends GameEngine<A, E, P, S>, P extends Player<A, E
         this.players = players;
     }
 
-    public S getStartState()
-    {
-        return startState;
-    }
-
-    public void setStartState(S startState)
-    {
-        this.startState = startState;
-    }
-
     @Override
     public void playGame()
     {
@@ -50,12 +40,32 @@ class SimpleContainer<A, E extends GameEngine<A, E, P, S>, P extends Player<A, E
             currentPlayer = getNextPlayer(currentPlayer);
             currentState = nextState;
         }
+
+        endState = currentState;
+    }
+
+    @Override
+    public S getStartState()
+    {
+        return startState;
+    }
+
+    @Override
+    public void setStartState(S startState)
+    {
+        this.startState = startState;
     }
 
     @Override
     public void addGameStateChangeListener(GameStateChangeListener<A, E, P, S> listener)
     {
         gameStateChangeListeners.add(listener);
+    }
+
+    @Override
+    public List<P> getPlayerRanking()
+    {
+        return gameEngine.rankPlayersAt(players, endState != null ? endState : startState);
     }
 
     private P getNextPlayer(P currentPlayer)
@@ -68,8 +78,8 @@ class SimpleContainer<A, E extends GameEngine<A, E, P, S>, P extends Player<A, E
         return players.get(currPlayerIndex+1);
     }
 
-    private S startState;
     private E gameEngine;
     private List<P> players;
+    private S startState, endState;
     private Set<GameStateChangeListener<A, E, P, S>> gameStateChangeListeners = new HashSet<>();
 }
