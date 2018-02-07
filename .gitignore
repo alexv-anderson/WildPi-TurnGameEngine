@@ -2,3 +2,8 @@
 *.iml
 out/
 .idea/
+
+#Ant script
+bin/
+jar/
+report/
