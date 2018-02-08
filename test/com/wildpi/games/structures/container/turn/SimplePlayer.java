@@ -4,6 +4,9 @@
 
 package com.wildpi.games.structures.container.turn;
 
+/**
+ * @author Alex
+ */
 class SimplePlayer implements Player<SimpleAction, SimpleGameEngine, SimplePlayer, SimpleState>
 {
     @Override

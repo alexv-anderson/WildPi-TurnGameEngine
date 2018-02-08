@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * A simple bare-bones implementation of {@link Container}
  *
  * @param <A> The type of actions which the players can take
  * @param <E> The type of game engine provided to the players
@@ -38,8 +39,8 @@ class SimpleContainer<A, E extends GameEngine<A, E, P, S>, P extends Player<A, E
             A action = currentPlayer.takeTurn(currentState, gameEngine);
             S nextState = gameEngine.applyActionByAt(action, currentPlayer, currentState);
 
-            for(GameStateChangeListener<A, E, P, S> listener : gameStateChangeListeners)
-                listener.onGameStateChanged(currentState, nextState, action, currentPlayer);
+            for(GameActionListener<A, E, P, S> listener : gameActionListeners)
+                listener.onGameAction(currentState, nextState, action, currentPlayer);
 
             currentPlayer = getNextPlayer(currentPlayer);
             currentState = nextState;
@@ -61,9 +62,9 @@ class SimpleContainer<A, E extends GameEngine<A, E, P, S>, P extends Player<A, E
     }
 
     @Override
-    public void addGameStateChangeListener(GameStateChangeListener<A, E, P, S> listener)
+    public void addGameActionListener(GameActionListener<A, E, P, S> listener)
     {
-        gameStateChangeListeners.add(listener);
+        gameActionListeners.add(listener);
     }
 
     @Override
@@ -85,5 +86,5 @@ class SimpleContainer<A, E extends GameEngine<A, E, P, S>, P extends Player<A, E
     private E gameEngine;
     private List<P> players;
     private S startState, endState;
-    private Set<GameStateChangeListener<A, E, P, S>> gameStateChangeListeners = new HashSet<>();
+    private Set<GameActionListener<A, E, P, S>> gameActionListeners = new HashSet<>();
 }

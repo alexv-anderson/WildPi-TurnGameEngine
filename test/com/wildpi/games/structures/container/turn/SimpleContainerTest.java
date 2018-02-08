@@ -12,6 +12,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 
+/**
+ * @author Alex
+ */
 public class SimpleContainerTest
 {
     @Test
@@ -25,7 +28,7 @@ public class SimpleContainerTest
         );
 
         CountingListener listener = new CountingListener();
-        container.addGameStateChangeListener(listener);
+        container.addGameActionListener(listener);
 
         container.playGame();
 
@@ -34,7 +37,7 @@ public class SimpleContainerTest
         assertThat("Player should be ranked 1st", container.getPlayerRanking().indexOf(player), is(0));
     }
 
-    private static class CountingListener implements GameStateChangeListener<SimpleAction, SimpleGameEngine, SimplePlayer, SimpleState>
+    private static class CountingListener implements GameActionListener<SimpleAction, SimpleGameEngine, SimplePlayer, SimpleState>
     {
         public int getNumNotifications()
         {
@@ -42,7 +45,7 @@ public class SimpleContainerTest
         }
 
         @Override
-        public void onGameStateChanged(SimpleState previousState, SimpleState currentState, SimpleAction actionTaken, SimplePlayer actingPlayer)
+        public void onGameAction(SimpleState previousState, SimpleState currentState, SimpleAction actionTaken, SimplePlayer actingPlayer)
         {
             numNotifications++;
         }

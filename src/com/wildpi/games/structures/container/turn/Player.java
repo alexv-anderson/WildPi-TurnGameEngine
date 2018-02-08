@@ -5,6 +5,7 @@
 package com.wildpi.games.structures.container.turn;
 
 /**
+ * Marks a object which can play a turn-based game.
  *
  * @param <A> The type of actions which the player can take
  * @param <E> The type of game engine provided to the player
@@ -15,5 +16,12 @@ package com.wildpi.games.structures.container.turn;
  */
 public interface Player<A, E extends GameEngine<A, E, P, S>, P extends Player<A, E, P, S>, S>
 {
+    /**
+     * Called when it is this players turn to act in the game.
+     *
+     * @param currentState The current state of the game
+     * @param gameEngine   The game engine which defines the rules and behavior of the game
+     * @return The action which this player would like to perform
+     */
     public A takeTurn(S currentState, E gameEngine);
 }

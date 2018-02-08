@@ -4,6 +4,9 @@
 
 package com.wildpi.games.structures.container.turn;
 
+/**
+ * @author Alex
+ */
 enum SimpleState
 {
     FULL, HALF, EMPTY

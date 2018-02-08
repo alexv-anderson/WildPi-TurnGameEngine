@@ -6,6 +6,9 @@ package com.wildpi.games.structures.container.turn;
 
 import java.util.*;
 
+/**
+ * @author Alex
+ */
 class SimpleGameEngine implements GameEngine<SimpleAction, SimpleGameEngine, SimplePlayer, SimpleState>
 {
     @Override

@@ -4,6 +4,9 @@
 
 package com.wildpi.games.structures.container.turn;
 
+/**
+ * @author Alex
+ */
 enum SimpleAction
 {
     POUR, NOTHING
