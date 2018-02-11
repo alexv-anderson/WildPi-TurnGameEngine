@@ -5,7 +5,7 @@
 package com.wildpi.games.structures.container.turn;
 
 /**
- * Marks a object which can play a turn-based game.
+ * Marks an object which will be notified when the a game's state has changed.
  *
  * @param <GA> The types of actions which may be applied to achieve a change in the state of the game
  * @param <GE> The type of object used to define the rules which govern the game
@@ -17,7 +17,7 @@ package com.wildpi.games.structures.container.turn;
  *
  * @author Alex
  */
-public interface Player<
+public interface GameStateChangedListener<
         GA,
         GE extends GameEngine<GA, GE, GS, P, TA, TE, TS>,
         GS,
@@ -27,12 +27,13 @@ public interface Player<
         TS>
 {
     /**
-     * Called when it is this players turn to act in the game.
-     * @param turnState  The initial state of the player's turn
-     * @param turnEngine The engine which allows the player to take actions during its turn
-     * @param gameState  The current state of the game
-     * @param gameEngine The engine which defines the rules of the game
-     * @return The ending state of the player's turn
+     * Called after a {@link Player}'s turn has changed the state of the game.
+     *
+     * Note: This may not be called for every action which results from a player's turn.
+     *
+     * @param previousState The state of the game before the action was taken
+     * @param currentState  The state of the game after the action was taken
+     * @param actingPlayer  The player on whose behalf the action was performed
      */
-    public TS takeTurn(TS turnState, TE turnEngine, GS gameState, GE gameEngine);
+    public void onGameStateChangedBy(GS previousState, GS currentState, P actingPlayer);
 }

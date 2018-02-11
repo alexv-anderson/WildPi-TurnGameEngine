@@ -9,14 +9,24 @@ import java.util.List;
 /**
  * Marks an object which holds the various objects needed to play a game
  *
- * @param <A> The type of actions which the player can take
- * @param <E> The type of game engine provided to the player
- * @param <P> The type of players in the game
- * @param <S> The type of game states provided to the player
+ * @param <GA> The types of actions which may be applied to achieve a change in the state of the game
+ * @param <GE> The type of object used to define the rules which govern the game
+ * @param <GS> The type of object which represents the state of the overall game
+ * @param <P>  The type of object which describes an actor playing the game
+ * @param <TA> The types of actions which a {@link Player} may take during their turn (may be different than game actions {@param <GA>})
+ * @param <TE> The typeof object used to define the rules which govern how {@link Player}s take their turns
+ * @param <TS> The type of object which represents the state of a {@link Player}'s turn
  *
  * @author Alex
  */
-public interface Container<A, E extends GameEngine<A, E, P, S>, P extends Player<A, E, P, S>, S>
+public interface Container<
+        GA,
+        GE extends GameEngine<GA, GE, GS, P, TA, TE, TS>,
+        GS,
+        P extends Player<GA, GE, GS, P, TA, TE, TS>,
+        TA,
+        TE extends TurnEngine<GA, GE, GS, P, TA, TE, TS>,
+        TS>
 {
     /**
      * Plays the game
@@ -27,19 +37,19 @@ public interface Container<A, E extends GameEngine<A, E, P, S>, P extends Player
      * Supplies the state in which the game will start
      * @return The game's start state
      */
-    public S getStartState();
+    public GS getStartState();
 
     /**
      * Sets the state in which the game will start to the given state
      * @param startState The state in which the game will start
      */
-    public void setStartState(S startState);
+    public void setStartState(GS startState);
 
     /**
-     * Adds the given {@link GameActionListener} to this {@link Container}
-     * @param listener
+     * Adds the given {@link GameStateChangedListener} to this {@link Container}
+     * @param listener The listener to be added
      */
-    public void addGameActionListener(GameActionListener<A, E, P, S> listener);
+    public void addGameActionListener(GameStateChangedListener<GA, GE, GS, P, TA, TE, TS> listener);
 
     /**
      * Supplies a ranking of all the players in the game in order from winner to loser

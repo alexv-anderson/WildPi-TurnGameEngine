@@ -7,14 +7,18 @@ package com.wildpi.games.structures.container.turn;
 /**
  * @author Alex
  */
-class SimplePlayer implements Player<SimpleAction, SimpleGameEngine, SimplePlayer, SimpleState>
+class SimplePlayer implements Player<
+        SimpleGameEngine.SimpleAction,
+        SimpleGameEngine,
+        SimpleGameEngine.SimpleState,
+        SimplePlayer,
+        SimpleTurnEngine.Action,
+        SimpleTurnEngine,
+        SimpleTurnEngine.State>
 {
     @Override
-    public SimpleAction takeTurn(SimpleState currentState, SimpleGameEngine gameEngine)
+    public SimpleTurnEngine.State takeTurn(SimpleTurnEngine.State turnState, SimpleTurnEngine turnEngine, SimpleGameEngine.SimpleState gameState, SimpleGameEngine gameEngine)
     {
-        if(gameEngine.getPossibleActionsForAt(this, currentState).contains(SimpleAction.POUR))
-            return SimpleAction.POUR;
-
-        return SimpleAction.NOTHING;
+        return SimpleTurnEngine.State.A;
     }
 }
