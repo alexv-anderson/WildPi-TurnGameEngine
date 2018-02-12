@@ -30,16 +30,16 @@ public interface GameEngine<
         TS>
 {
     /**
-     * Supplies the state which results from {@param actingPlayer} performing the given {@param action} at the {@param originalState}.
+     * Supplies the state which results from {@param actingPlayer} performing the given {@param action} on the {@param originalState}.
      *
      * Note: It is assumed that this method creates a new state object instead of simply modifying {@param originalState}.
      *
-     * @param endTurnState  The end state of the given player's turn
-     * @param actingPlayer  The player who has completed their turn
-     * @param originalState The game state from which the action is to be taken
+     * @param action        The game action which the given player's is performing
+     * @param actingPlayer  The player who is performing the action
+     * @param originalState The game state from which the action is to be performed
      * @return The game state which results from taking the action
      */
-    public GS getGameStateAfterTurn(TS endTurnState, P actingPlayer, GS originalState);
+    public GS getGameStateAfterActionBy(GA action, P actingPlayer, GS originalState);
 
     /**
      * Supplies a ranking of the provided {@param players} at the given {@param currentState} in order from winner to loser.

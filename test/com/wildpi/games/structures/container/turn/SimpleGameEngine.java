@@ -18,28 +18,8 @@ class SimpleGameEngine implements GameEngine<
         SimpleTurnEngine,
         SimpleTurnEngine.State>
 {
-//    @Override
-//    public List<SimpleAction> getPossibleActionsForAt(SimplePlayer actingPlayer, SimpleState currentState)
-//    {
-//        return Arrays.asList(SimpleAction.values());
-//    }
-//
-//    @Override
-//    public SimpleState applyActionByAt(SimpleAction action, SimplePlayer actingPlayer, SimpleState currentState)
-//    {
-//        switch(currentState) {
-//            case FULL:
-//            case HALF:
-//                return SimpleState.FULL;
-//            case EMPTY:
-//                return SimpleState.HALF;
-//        }
-//
-//        return SimpleState.EMPTY;
-//    }
-
     @Override
-    public SimpleState getGameStateAfterTurn(SimpleTurnEngine.State endTurnState, SimplePlayer actingPlayer, SimpleState originalState)
+    public SimpleState getGameStateAfterActionBy(SimpleAction action, SimplePlayer actingPlayer, SimpleState originalState)
     {
         switch(originalState)
         {

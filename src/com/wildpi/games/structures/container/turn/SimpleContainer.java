@@ -52,7 +52,7 @@ class SimpleContainer<
                     turnEngine,
                     currentState,
                     gameEngine);
-            GS nextState = gameEngine.getGameStateAfterTurn(endingTurnState, currentPlayer, currentState);
+            GS nextState = getGameStateAfterTurn(endingTurnState, currentPlayer, currentState);
 
             for(GameStateChangedListener<GA, GE, GS, P, TA, TE, TS> listener : gameStateChangedListeners)
                 listener.onGameStateChangedBy(currentState, nextState, currentPlayer);
@@ -88,6 +88,7 @@ class SimpleContainer<
         return gameEngine.rankPlayersAt(players, endState != null ? endState : startState);
     }
 
+    //region Helpers
     private P getNextPlayer(P currentPlayer)
     {
         int currPlayerIndex = players.indexOf(currentPlayer);
@@ -97,6 +98,14 @@ class SimpleContainer<
 
         return players.get(currPlayerIndex+1);
     }
+    private GS getGameStateAfterTurn(TS endTurnState, P actingPlayer, GS originalState)
+    {
+        GS currentState = originalState;
+        for(GA action : turnEngine.convertToGameActions(endTurnState))
+            currentState = gameEngine.getGameStateAfterActionBy(action, actingPlayer, currentState);
+        return currentState;
+    }
+    //endregion
 
     private GE gameEngine;
     private TE turnEngine;
