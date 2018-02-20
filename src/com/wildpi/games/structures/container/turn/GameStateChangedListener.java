@@ -4,10 +4,8 @@
 
 package com.wildpi.games.structures.container.turn;
 
-import java.util.List;
-
 /**
- * Marks an object which holds the various objects needed to play a game
+ * Marks an object which will be notified when the a game's state has changed.
  *
  * @param <GA> The types of actions which may be applied to achieve a change in the state of the game
  * @param <GE> The type of object used to define the rules which govern the game
@@ -20,7 +18,7 @@ import java.util.List;
  *
  * @author Alex
  */
-public interface Container<
+public interface GameStateChangedListener<
         GA,
         GE extends GameEngine<GA, GE, GS, P, PS, TA, TE, TS>,
         GS,
@@ -31,31 +29,13 @@ public interface Container<
         TS>
 {
     /**
-     * Plays the game
+     * Called after a {@link Player}'s turn has changed the state of the game.
+     *
+     * Note: This may not be called for every action which results from a player's turn.
+     *
+     * @param previousState The state of the game before the action was taken
+     * @param currentState  The state of the game after the action was taken
+     * @param actingPlayer  The player on whose behalf the action was performed
      */
-    public void playGame();
-
-    /**
-     * Supplies the state in which the game will start
-     * @return The game's start state
-     */
-    public GS getStartState();
-
-    /**
-     * Sets the state in which the game will start to the given state
-     * @param startState The state in which the game will start
-     */
-    public void setStartState(GS startState);
-
-    /**
-     * Adds the given {@link GameStateChangedListener} to this {@link Container}
-     * @param listener The listener to be added
-     */
-    public void addGameActionListener(GameStateChangedListener<GA, GE, GS, P, PS, TA, TE, TS> listener);
-
-    /**
-     * Supplies a ranking of all the players in the game in order from winner to loser
-     * @return A ranked list of the players
-     */
-    public List<GameRanking<P, PS>> getPlayerStandings();
+    public void onGameStateChangedBy(GS previousState, GS currentState, P actingPlayer);
 }

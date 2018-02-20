@@ -21,9 +21,18 @@ public class SimpleContainerTest
     public void singlePlayerGame()
     {
         SimplePlayer player = new SimplePlayer();
-        Container<SimpleAction, SimpleGameEngine, SimplePlayer, SimpleState> container = new SimpleContainer<>(
-                SimpleState.EMPTY,
+        Container<
+                SimpleGameEngine.SimpleAction,
+                SimpleGameEngine,
+                SimpleGameEngine.SimpleState,
+                SimplePlayer,
+                SimplePlayer.Standing,
+                SimpleTurnEngine.Action,
+                SimpleTurnEngine,
+                SimpleTurnEngine.State> container = new SimpleContainer<>(
+                SimpleGameEngine.SimpleState.EMPTY,
                 new SimpleGameEngine(),
+                new SimpleTurnEngine(),
                 Collections.singletonList(player)
         );
 
@@ -33,11 +42,17 @@ public class SimpleContainerTest
         container.playGame();
 
         assertThat("Listener should have been notified twice", listener.getNumNotifications(), is(2));
-        assertThat("Player should be ranked", container.getPlayerRanking(), contains(player));
-        assertThat("Player should be ranked 1st", container.getPlayerRanking().indexOf(player), is(0));
     }
 
-    private static class CountingListener implements GameActionListener<SimpleAction, SimpleGameEngine, SimplePlayer, SimpleState>
+    private static class CountingListener implements GameStateChangedListener<
+                SimpleGameEngine.SimpleAction,
+                SimpleGameEngine,
+                SimpleGameEngine.SimpleState,
+                SimplePlayer,
+                SimplePlayer.Standing,
+                SimpleTurnEngine.Action,
+                SimpleTurnEngine,
+                SimpleTurnEngine.State>
     {
         public int getNumNotifications()
         {
@@ -45,7 +60,7 @@ public class SimpleContainerTest
         }
 
         @Override
-        public void onGameAction(SimpleState previousState, SimpleState currentState, SimpleAction actionTaken, SimplePlayer actingPlayer)
+        public void onGameStateChangedBy(SimpleGameEngine.SimpleState previousState, SimpleGameEngine.SimpleState currentState, SimplePlayer actingPlayer)
         {
             numNotifications++;
         }

@@ -4,23 +4,24 @@
 
 package com.wildpi.games.structures.container.turn;
 
-import java.util.*;
-
 /**
  * @author Alex
  */
-class SimpleGameEngine implements GameEngine<SimpleAction, SimpleGameEngine, SimplePlayer, SimpleState>
+class SimpleGameEngine implements GameEngine<
+        SimpleGameEngine.SimpleAction,
+        SimpleGameEngine,
+        SimpleGameEngine.SimpleState,
+        SimplePlayer,
+        SimplePlayer.Standing,
+        SimpleTurnEngine.Action,
+        SimpleTurnEngine,
+        SimpleTurnEngine.State>
 {
     @Override
-    public List<SimpleAction> getPossibleActionsForAt(SimplePlayer actingPlayer, SimpleState currentState)
+    public SimpleState getGameStateAfterActionBy(SimpleAction action, SimplePlayer actingPlayer, SimpleState originalState)
     {
-        return Arrays.asList(SimpleAction.values());
-    }
-
-    @Override
-    public SimpleState applyActionByAt(SimpleAction action, SimplePlayer actingPlayer, SimpleState currentState)
-    {
-        switch(currentState) {
+        switch(originalState)
+        {
             case FULL:
             case HALF:
                 return SimpleState.FULL;
@@ -32,14 +33,30 @@ class SimpleGameEngine implements GameEngine<SimpleAction, SimpleGameEngine, Sim
     }
 
     @Override
-    public List<SimplePlayer> rankPlayersAt(Collection<SimplePlayer> players, SimpleState currentState)
+    public SimplePlayer.Standing getPlayerStandingForAt(SimplePlayer player, SimpleState currentState)
     {
-        return new ArrayList<>(players);
+        return new SimplePlayer.Standing(10);
     }
 
     @Override
     public boolean isGameCompletedAt(SimpleState currentState)
     {
         return currentState.equals(SimpleState.FULL);
+    }
+
+    /**
+     * @author Alex
+     */
+    static enum SimpleAction
+    {
+        POUR, NOTHING
+    }
+
+    /**
+     * @author Alex
+     */
+    static enum SimpleState
+    {
+        FULL, HALF, EMPTY
     }
 }
