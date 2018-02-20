@@ -12,6 +12,7 @@ class SimplePlayer implements Player<
         SimpleGameEngine,
         SimpleGameEngine.SimpleState,
         SimplePlayer,
+        SimplePlayer.Standing,
         SimpleTurnEngine.Action,
         SimpleTurnEngine,
         SimpleTurnEngine.State>
@@ -20,5 +21,27 @@ class SimplePlayer implements Player<
     public SimpleTurnEngine.State takeTurn(SimpleTurnEngine.State turnState, SimpleTurnEngine turnEngine, SimpleGameEngine.SimpleState gameState, SimpleGameEngine gameEngine)
     {
         return SimpleTurnEngine.State.A;
+    }
+
+    public static class Standing implements PlayerStanding<SimplePlayer.Standing>
+    {
+
+        public Standing(int points)
+        {
+            this.points = points;
+        }
+
+        public int getPoints()
+        {
+            return points;
+        }
+
+        @Override
+        public int compareTo(Standing o)
+        {
+            return Integer.compare(getPoints(), o.getPoints());
+        }
+
+        private int points;
     }
 }

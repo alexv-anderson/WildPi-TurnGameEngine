@@ -13,6 +13,7 @@ import java.util.List;
  * @param <GE> The type of object used to define the rules which govern the game
  * @param <GS> The type of object which represents the state of the overall game
  * @param <P>  The type of object which describes an actor playing the game
+ * @param <PS> The type of object which describes the standing or rank of a {@link Player}
  * @param <TA> The types of actions which a {@link Player} may take during their turn (may be different than game actions {@param <GA>})
  * @param <TE> The typeof object used to define the rules which govern how {@link Player}s take their turns
  * @param <TS> The type of object which represents the state of a {@link Player}'s turn
@@ -21,11 +22,12 @@ import java.util.List;
  */
 public interface Container<
         GA,
-        GE extends GameEngine<GA, GE, GS, P, TA, TE, TS>,
+        GE extends GameEngine<GA, GE, GS, P, PS, TA, TE, TS>,
         GS,
-        P extends Player<GA, GE, GS, P, TA, TE, TS>,
+        P extends Player<GA, GE, GS, P, PS, TA, TE, TS>,
+        PS extends PlayerStanding<PS>,
         TA,
-        TE extends TurnEngine<GA, GE, GS, P, TA, TE, TS>,
+        TE extends TurnEngine<GA, GE, GS, P, PS, TA, TE, TS>,
         TS>
 {
     /**
@@ -49,12 +51,11 @@ public interface Container<
      * Adds the given {@link GameStateChangedListener} to this {@link Container}
      * @param listener The listener to be added
      */
-    public void addGameActionListener(GameStateChangedListener<GA, GE, GS, P, TA, TE, TS> listener);
+    public void addGameActionListener(GameStateChangedListener<GA, GE, GS, P, PS, TA, TE, TS> listener);
 
     /**
      * Supplies a ranking of all the players in the game in order from winner to loser
-     * //TODO: Adjust to allow for tie games
      * @return A ranked list of the players
      */
-    public List<P> getPlayerRanking();
+    public List<GameRanking<P, PS>> getPlayerStandings();
 }

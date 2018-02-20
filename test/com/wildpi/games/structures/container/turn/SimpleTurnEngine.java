@@ -12,6 +12,7 @@ public class SimpleTurnEngine implements TurnEngine<
         SimpleGameEngine,
         SimpleGameEngine.SimpleState,
         SimplePlayer,
+        SimplePlayer.Standing,
         SimpleTurnEngine.Action,
         SimpleTurnEngine,
         SimpleTurnEngine.State>

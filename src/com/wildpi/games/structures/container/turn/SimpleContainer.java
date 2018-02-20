@@ -4,6 +4,7 @@
 
 package com.wildpi.games.structures.container.turn;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +16,7 @@ import java.util.Set;
  * @param <GE> The type of object used to define the rules which govern the game
  * @param <GS> The type of object which represents the state of the overall game
  * @param <P>  The type of object which describes an actor playing the game
+ * @param <PS> The type of object which describes the standing or rank of a {@link Player}
  * @param <TA> The types of actions which a {@link Player} may take during their turn (may be different than game actions {@param <GA>})
  * @param <TE> The typeof object used to define the rules which govern how {@link Player}s take their turns
  * @param <TS> The type of object which represents the state of a {@link Player}'s turn
@@ -23,13 +25,14 @@ import java.util.Set;
  */
 class SimpleContainer<
         GA,
-        GE extends GameEngine<GA, GE, GS, P, TA, TE, TS>,
+        GE extends GameEngine<GA, GE, GS, P, PS, TA, TE, TS>,
         GS,
-        P extends Player<GA, GE, GS, P, TA, TE, TS>,
+        P extends Player<GA, GE, GS, P, PS, TA, TE, TS>,
+        PS extends PlayerStanding<PS>,
         TA,
-        TE extends TurnEngine<GA, GE, GS, P, TA, TE, TS>,
+        TE extends TurnEngine<GA, GE, GS, P, PS, TA, TE, TS>,
         TS>
-    implements Container<GA, GE, GS, P, TA, TE, TS>
+    implements Container<GA, GE, GS, P, PS, TA, TE, TS>
 {
     public SimpleContainer(GS startState, GE gameEngine, TE turnEngine, List<P> players)
     {
@@ -54,7 +57,7 @@ class SimpleContainer<
                     gameEngine);
             GS nextState = getGameStateAfterTurn(endingTurnState, currentPlayer, currentState);
 
-            for(GameStateChangedListener<GA, GE, GS, P, TA, TE, TS> listener : gameStateChangedListeners)
+            for(GameStateChangedListener<GA, GE, GS, P, PS, TA, TE, TS> listener : gameStateChangedListeners)
                 listener.onGameStateChangedBy(currentState, nextState, currentPlayer);
 
             currentPlayer = getNextPlayer(currentPlayer);
@@ -77,15 +80,39 @@ class SimpleContainer<
     }
 
     @Override
-    public void addGameActionListener(GameStateChangedListener<GA, GE, GS, P, TA, TE, TS> listener)
+    public void addGameActionListener(GameStateChangedListener<GA, GE, GS, P, PS, TA, TE, TS> listener)
     {
         gameStateChangedListeners.add(listener);
     }
 
     @Override
-    public List<P> getPlayerRanking()
+    public List<GameRanking<P, PS>> getPlayerStandings()
     {
-        return gameEngine.rankPlayersAt(players, endState != null ? endState : startState);
+        GS state = endState != null ? endState : startState;
+
+        //Use Tree sort to get a sorted list of players
+        MultiKeyTree<P, PS> tree = new MultiKeyTree<>();
+        players.forEach(p -> {
+            PS ps = gameEngine.getPlayerStandingForAt(p, state);
+            tree.insert(p, ps);
+        });
+
+        List<GameRanking<P, PS>> list = new ArrayList<>();
+        tree.traverseInOrder((players, standing) -> players.forEach(player -> list.add(new GameRanking<P, PS>() {
+            @Override
+            public P getPlayer()
+            {
+                return player;
+            }
+
+            @Override
+            public PS getPlayerStanding()
+            {
+                return standing;
+            }
+        })));
+
+        return list;
     }
 
     //region Helpers
@@ -111,5 +138,5 @@ class SimpleContainer<
     private TE turnEngine;
     private List<P> players;
     private GS startState, endState;
-    private Set<GameStateChangedListener<GA, GE, GS, P, TA, TE, TS>> gameStateChangedListeners = new HashSet<>();
+    private Set<GameStateChangedListener<GA, GE, GS, P, PS, TA, TE, TS>> gameStateChangedListeners = new HashSet<>();
 }

@@ -4,8 +4,6 @@
 
 package com.wildpi.games.structures.container.turn;
 
-import java.util.*;
-
 /**
  * @author Alex
  */
@@ -14,6 +12,7 @@ class SimpleGameEngine implements GameEngine<
         SimpleGameEngine,
         SimpleGameEngine.SimpleState,
         SimplePlayer,
+        SimplePlayer.Standing,
         SimpleTurnEngine.Action,
         SimpleTurnEngine,
         SimpleTurnEngine.State>
@@ -34,9 +33,9 @@ class SimpleGameEngine implements GameEngine<
     }
 
     @Override
-    public List<SimplePlayer> rankPlayersAt(Collection<SimplePlayer> players, SimpleState currentState)
+    public SimplePlayer.Standing getPlayerStandingForAt(SimplePlayer player, SimpleState currentState)
     {
-        return new ArrayList<>(players);
+        return new SimplePlayer.Standing(10);
     }
 
     @Override

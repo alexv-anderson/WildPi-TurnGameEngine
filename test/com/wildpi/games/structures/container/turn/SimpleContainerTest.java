@@ -26,6 +26,7 @@ public class SimpleContainerTest
                 SimpleGameEngine,
                 SimpleGameEngine.SimpleState,
                 SimplePlayer,
+                SimplePlayer.Standing,
                 SimpleTurnEngine.Action,
                 SimpleTurnEngine,
                 SimpleTurnEngine.State> container = new SimpleContainer<>(
@@ -41,8 +42,6 @@ public class SimpleContainerTest
         container.playGame();
 
         assertThat("Listener should have been notified twice", listener.getNumNotifications(), is(2));
-        assertThat("Player should be ranked", container.getPlayerRanking(), contains(player));
-        assertThat("Player should be ranked 1st", container.getPlayerRanking().indexOf(player), is(0));
     }
 
     private static class CountingListener implements GameStateChangedListener<
@@ -50,6 +49,7 @@ public class SimpleContainerTest
                 SimpleGameEngine,
                 SimpleGameEngine.SimpleState,
                 SimplePlayer,
+                SimplePlayer.Standing,
                 SimpleTurnEngine.Action,
                 SimpleTurnEngine,
                 SimpleTurnEngine.State>
