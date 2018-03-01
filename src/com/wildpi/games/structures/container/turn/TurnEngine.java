@@ -39,8 +39,9 @@ public interface TurnEngine<
     public TS getInitialTurnStateForAt(P actingPlayer, GS initialState);
 
     /**
-     * Supplies a collection of the game actions which need to be apllied to a game's state as the result of the turn's actions
+     * Supplies a collection of the game actions which need to be applied to a game's state as the result of the turn's actions
      * @return A collection of game actions to be made to a game's state
+     * @throws GameActionCreationException Thrown when an error occurs when converting the turn's state into actions in the game.
      */
     public List<GA> convertToGameActions(TS turnState) throws GameActionCreationException;
 
@@ -52,6 +53,7 @@ public interface TurnEngine<
      * @param action The action to be performed
      * @param originalState The state of the player's turn before the action is applied
      * @return The state of the player's after the action is applied
+     * @throws TurnActionException Thrown when an error occurs when applying the supplied action the the turn's state
      */
     public TS getTurnStateAfter(TA action, TS originalState) throws TurnActionException;
 }

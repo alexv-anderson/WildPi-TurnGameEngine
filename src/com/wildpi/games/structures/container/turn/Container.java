@@ -32,6 +32,7 @@ public interface Container<
 {
     /**
      * Plays the game
+     * @throws GameActionCreationException Thrown when an error occurs when converting the a turn's state into actions in the game.
      */
     public void playGame() throws GameActionCreationException;
 
