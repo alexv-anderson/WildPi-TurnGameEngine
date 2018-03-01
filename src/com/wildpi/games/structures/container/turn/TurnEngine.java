@@ -42,7 +42,7 @@ public interface TurnEngine<
      * Supplies a collection of the game actions which need to be apllied to a game's state as the result of the turn's actions
      * @return A collection of game actions to be made to a game's state
      */
-    public List<GA> convertToGameActions(TS turnState);
+    public List<GA> convertToGameActions(TS turnState) throws GameActionCreationException;
 
     /**
      * Applies the given action to the state and returns the state which resulted from applying the action
@@ -53,5 +53,5 @@ public interface TurnEngine<
      * @param originalState The state of the player's turn before the action is applied
      * @return The state of the player's after the action is applied
      */
-    public TS getTurnStateAfter(TA action, TS originalState);
+    public TS getTurnStateAfter(TA action, TS originalState) throws TurnActionException;
 }

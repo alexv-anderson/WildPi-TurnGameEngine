@@ -43,7 +43,7 @@ class SimpleContainer<
     }
 
     @Override
-    public void playGame()
+    public void playGame() throws GameActionCreationException
     {
         P currentPlayer = players.get(0);
         GS currentState = getStartState();
@@ -125,7 +125,7 @@ class SimpleContainer<
 
         return players.get(currPlayerIndex+1);
     }
-    private GS getGameStateAfterTurn(TS endTurnState, P actingPlayer, GS originalState)
+    private GS getGameStateAfterTurn(TS endTurnState, P actingPlayer, GS originalState) throws GameActionCreationException
     {
         GS currentState = originalState;
         for(GA action : turnEngine.convertToGameActions(endTurnState))

@@ -33,7 +33,7 @@ public interface Container<
     /**
      * Plays the game
      */
-    public void playGame();
+    public void playGame() throws GameActionCreationException;
 
     /**
      * Supplies the state in which the game will start

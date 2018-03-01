@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.contains;
 public class SimpleContainerTest
 {
     @Test
-    public void singlePlayerGame()
+    public void singlePlayerGame() throws GameActionCreationException
     {
         SimplePlayer player = new SimplePlayer();
         Container<
